@@ -12,9 +12,9 @@ describe('In Memory DB Controller', () => {
   let service: InMemoryDBService<TestEntity>;
 
   const sampleRecords: TestEntity[] = [
-    { id: 1, someField: 'AAA' },
-    { id: 2, someField: 'BBB' },
-    { id: 3, someField: 'CCC' },
+    { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+    { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+    { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
   ];
 
   class MockController extends InMemoryDBEntityController<TestEntity> {
@@ -37,9 +37,9 @@ describe('In Memory DB Controller', () => {
 
     test('should call service get spy when given valid id', () => {
       // act
-      controller.get(1);
+      controller.get('1603279e-c143-4675-ba1e-88a9325789f1');
       // assert
-      expect(spy).toHaveBeenCalledWith(1);
+      expect(spy).toHaveBeenCalledWith('1603279e-c143-4675-ba1e-88a9325789f1');
     });
   });
 
@@ -47,7 +47,10 @@ describe('In Memory DB Controller', () => {
     test('should call service getMany spy when given list of ids', () => {
       // arrange
       const spy = spyOn(service, 'getMany');
-      const testEntityMock = [1, 2, 3];
+      const testEntityMock = [
+        '1603279e-c143-4675-ba1e-88a9325789f1',
+        'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84',
+        'ab141cf5-33c6-4ef8-8314-26ecaa249b39'];
       // act
       controller.getMany(testEntityMock);
       // assert
@@ -96,9 +99,9 @@ describe('In Memory DB Controller', () => {
       // arrange
       const testEntityMock = { someField: 'DDD' };
       // act
-      controller.update(1, testEntityMock);
+      controller.update('1603279e-c143-4675-ba1e-88a9325789f1', testEntityMock);
       // assert
-      expect(spy).toHaveBeenCalledWith({ id: 1, ...testEntityMock });
+      expect(spy).toHaveBeenCalledWith({ id: '1603279e-c143-4675-ba1e-88a9325789f1', ...testEntityMock });
     });
   });
 
@@ -128,9 +131,9 @@ describe('In Memory DB Controller', () => {
 
     test('should call delete when give a valid id', () => {
       // act
-      controller.delete(1);
+      controller.delete('1603279e-c143-4675-ba1e-88a9325789f1');
       // assert
-      expect(spy).toHaveBeenCalledWith(1);
+      expect(spy).toHaveBeenCalledWith('1603279e-c143-4675-ba1e-88a9325789f1');
     });
   });
 
@@ -143,7 +146,10 @@ describe('In Memory DB Controller', () => {
 
     test('should call delete many when given valid ids list', () => {
       // arrange
-      const testEntityMock = [1, 2, 3];
+      const testEntityMock = [
+        '1603279e-c143-4675-ba1e-88a9325789f1',
+        'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84',
+        'ab141cf5-33c6-4ef8-8314-26ecaa249b39'];
       // act
       controller.deleteMany(testEntityMock);
       // assert

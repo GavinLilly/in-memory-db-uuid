@@ -11,9 +11,9 @@ describe('In Memory DB Service', () => {
   let service: InMemoryDBService<TestEntity>;
 
   const sampleRecords: TestEntity[] = [
-    { id: 1, someField: 'AAA' },
-    { id: 2, someField: 'BBB' },
-    { id: 3, someField: 'CCC' },
+    { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+    { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+    { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
   ];
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('In Memory DB Service', () => {
       const expectedRecord = sampleRecords[0];
 
       // act
-      const actualRecord = service.get(1);
+      const actualRecord = service.get('1603279e-c143-4675-ba1e-88a9325789f1');
 
       // assert
       expect(actualRecord).toEqual(expectedRecord);
@@ -39,7 +39,7 @@ describe('In Memory DB Service', () => {
       const expectedRecord = undefined;
 
       // act
-      const actualRecord = service.get(-1);
+      const actualRecord = service.get('4c7c6e62-3f61-4eed-b5fd-f55103eb1863');
 
       // assert
       expect(actualRecord).toEqual(expectedRecord);
@@ -55,7 +55,7 @@ describe('In Memory DB Service', () => {
         const expectedRecord = m.cold('a|', sampleRecords[0]);
 
         // act
-        const actualRecord = m.cold('a|', service.getAsync(1));
+        const actualRecord = m.cold('a|', service.getAsync('1603279e-c143-4675-ba1e-88a9325789f1'));
 
         // assert
         m.expect(actualRecord).toBeObservable(expectedRecord);
@@ -70,7 +70,7 @@ describe('In Memory DB Service', () => {
         const expectedRecord = m.cold('a|', {});
 
         // act
-        const actualRecord = m.cold('a|', service.getAsync(-1));
+        const actualRecord = m.cold('a|', service.getAsync('5fb636cc-480b-4b0a-a156-6521b4d3258b'));
 
         // assert
         m.expect(actualRecord).toBeObservable(expectedRecord);
@@ -85,7 +85,10 @@ describe('In Memory DB Service', () => {
       const expectedRecords = [...[sampleRecords[0], sampleRecords[1]]];
 
       // act
-      const actualRecords = service.getMany([1, 2]);
+      const actualRecords = service.getMany([
+        '1603279e-c143-4675-ba1e-88a9325789f1',
+        'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84'
+      ]);
 
       // assert
       expect(actualRecords).toEqual(expectedRecords);
@@ -97,7 +100,10 @@ describe('In Memory DB Service', () => {
       const expectedRecords = [sampleRecords[0]];
 
       // act
-      const actualRecords = service.getMany([-1, 1]);
+      const actualRecords = service.getMany([
+        '79e43454-48f4-4c54-a55b-6ccb7a1eb764',
+        '1603279e-c143-4675-ba1e-88a9325789f1'
+      ]);
 
       // assert
       expect(actualRecords).toEqual(expectedRecords);
@@ -115,7 +121,10 @@ describe('In Memory DB Service', () => {
         ]);
 
         // act
-        const actualRecord = m.cold('a|', service.getManyAsync([1, 2]));
+        const actualRecord = m.cold('a|', service.getManyAsync([
+          '1603279e-c143-4675-ba1e-88a9325789f1',
+          'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84'
+        ]));
 
         // assert
         m.expect(actualRecord).toBeObservable(expectedRecord);
@@ -130,7 +139,10 @@ describe('In Memory DB Service', () => {
         const expectedRecord = m.cold('a|', [sampleRecords[0]]);
 
         // act
-        const actualRecords = m.cold('a|', service.getManyAsync([-1, 1]));
+        const actualRecords = m.cold('a|', service.getManyAsync([
+          '79e43454-48f4-4c54-a55b-6ccb7a1eb764',
+          '1603279e-c143-4675-ba1e-88a9325789f1'
+        ]));
 
         // assert
         m.expect(actualRecords).toBeObservable(expectedRecord);
@@ -199,7 +211,7 @@ describe('In Memory DB Service', () => {
       // arrange
       service.records = [];
       const itemToAdd: Partial<TestEntity> = { someField: 'Test' };
-      const expectedRecords = [...[{ ...itemToAdd, id: 1 }]];
+      const expectedRecords = [...[{ ...itemToAdd, id: '1603279e-c143-4675-ba1e-88a9325789f1' }]];
 
       // act
       service.create(itemToAdd);
@@ -211,7 +223,7 @@ describe('In Memory DB Service', () => {
       // arrange
       service.records = [];
       const itemToAdd: Partial<TestEntity> = { someField: 'Test' };
-      const expectedRecord = { ...itemToAdd, id: 1 };
+      const expectedRecord = { ...itemToAdd, id: '1603279e-c143-4675-ba1e-88a9325789f1' };
 
       // act
       const actualRecord = service.create(itemToAdd);
@@ -263,8 +275,8 @@ describe('In Memory DB Service', () => {
       const item2ToAdd: Partial<TestEntity> = { someField: 'Another' };
       const expectedRecords = [
         ...[
-          { ...item1ToAdd, id: 1 },
-          { ...item2ToAdd, id: 2 },
+          { ...item1ToAdd, id: '1603279e-c143-4675-ba1e-88a9325789f1' },
+          { ...item2ToAdd, id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84' },
         ],
       ];
 
@@ -282,8 +294,8 @@ describe('In Memory DB Service', () => {
       const item2ToAdd: Partial<TestEntity> = { someField: 'Another' };
 
       const expectedGeneratedRecords = [
-        { ...item1ToAdd, id: 1 },
-        { ...item2ToAdd, id: 2 },
+        { ...item1ToAdd, id: '1603279e-c143-4675-ba1e-88a9325789f1' },
+        { ...item2ToAdd, id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84' },
       ];
 
       // act
@@ -354,8 +366,8 @@ describe('In Memory DB Service', () => {
   describe('update', () => {
     test('should update record as expected', () => {
       // arrange
-      const originalRecord: TestEntity = { id: 1, someField: 'AAA' };
-      const expectedUpdatedRecord: TestEntity = { id: 1, someField: 'BBB' };
+      const originalRecord: TestEntity = { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' };
+      const expectedUpdatedRecord: TestEntity = { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'BBB' };
       service.records = [...[originalRecord]];
 
       // act
@@ -375,8 +387,8 @@ describe('In Memory DB Service', () => {
       'should update record as expected asyncronously',
       marbles(m => {
         // arrange
-        const originRecord: TestEntity = { id: 1, someField: 'AAA' };
-        const updatedRecord: TestEntity = { id: 1, someField: 'BBB' };
+        const originRecord: TestEntity = { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' };
+        const updatedRecord: TestEntity = { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'BBB' };
         service.records = [...[originRecord]];
         const expectedRecord = m.cold('a|', updatedRecord);
 
@@ -398,13 +410,13 @@ describe('In Memory DB Service', () => {
     test('should update records as expected', () => {
       // arrange
       const originalRecords: TestEntity[] = [
-        { id: 1, someField: 'AAA' },
-        { id: 2, someField: 'BBB' },
-        { id: 3, someField: 'CCC' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+        { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
       ];
       const expectedUpdatedRecords: TestEntity[] = [
-        { id: 1, someField: 'YYY' },
-        { id: 2, someField: 'ZZZ' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'YYY' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'ZZZ' },
       ];
       service.records = [...originalRecords];
 
@@ -426,13 +438,13 @@ describe('In Memory DB Service', () => {
       marbles(m => {
         // arrange
         const originRecords: TestEntity[] = [
-          { id: 1, someField: 'AAA' },
-          { id: 2, someField: 'BBB' },
-          { id: 3, someField: 'CCC' },
+          { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+          { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+          { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
         ];
         const updatedRecords: TestEntity[] = [
-          { id: 1, someField: 'YYY' },
-          { id: 2, someField: 'ZZZ' },
+          { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'YYY' },
+          { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'ZZZ' },
         ];
         service.records = [...originRecords];
         const expectedRecords = m.cold('a|', updatedRecords);
@@ -457,15 +469,15 @@ describe('In Memory DB Service', () => {
     test('should remove record as expected', () => {
       // arrange
       service.records = [
-        { id: 1, someField: 'AAA' },
-        { id: 2, someField: 'BBB' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
       ];
 
       // act
-      service.delete(2);
+      service.delete('bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84');
 
       // assert
-      const secondRecord = service.records.find(record => record.id === 2);
+      const secondRecord = service.records.find(record => record.id === 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84');
       expect(secondRecord).toEqual(undefined);
       expect(service.records.length).toEqual(1);
     });
@@ -475,15 +487,15 @@ describe('In Memory DB Service', () => {
     test('should remove record as expected asyncronously', () => {
       // arrange
       service.records = [
-        { id: 1, someField: 'AAA' },
-        { id: 2, someField: 'BBB' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
       ];
 
       // act
-      service.deleteAsync(2);
+      service.deleteAsync('bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84');
 
       // assert
-      const secondRecord = service.records.find(record => record.id === 2);
+      const secondRecord = service.records.find(record => record.id === 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84');
       expect(secondRecord).toEqual(undefined);
       expect(service.records.length).toEqual(1);
     });
@@ -493,17 +505,20 @@ describe('In Memory DB Service', () => {
     test('should remove records as expected', () => {
       // arrange
       service.records = [
-        { id: 1, someField: 'AAA' },
-        { id: 2, someField: 'BBB' },
-        { id: 3, someField: 'CCC' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+        { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
       ];
 
       // act
-      service.deleteMany([1, 2]);
+      service.deleteMany([
+        '1603279e-c143-4675-ba1e-88a9325789f1',
+        'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84'
+      ]);
 
       // assert
       const thirdRecord = service.records[0];
-      expect(thirdRecord).toEqual({ id: 3, someField: 'CCC' });
+      expect(thirdRecord).toEqual({ id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' });
       expect(service.records.length).toEqual(1);
     });
   });
@@ -512,17 +527,19 @@ describe('In Memory DB Service', () => {
     test('should remove records as expected asyncronously', () => {
       // arrange
       service.records = [
-        { id: 1, someField: 'AAAA' },
-        { id: 2, someField: 'BBB' },
-        { id: 3, someField: 'CCC' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
+        { id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' },
       ];
 
       // act
-      service.deleteManyAsync([1, 2]);
+      service.deleteManyAsync([
+        '1603279e-c143-4675-ba1e-88a9325789f1',
+        'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84']);
 
       // assert
       const thirdRecord = service.records[0];
-      expect(thirdRecord).toEqual({ id: 3, someField: 'CCC' });
+      expect(thirdRecord).toEqual({ id: 'ab141cf5-33c6-4ef8-8314-26ecaa249b39', someField: 'CCC' });
       expect(service.records.length).toEqual(1);
     });
   });
@@ -531,8 +548,8 @@ describe('In Memory DB Service', () => {
     test('should return expected records for given predicate', () => {
       // arrange
       service.records = [
-        { id: 1, someField: 'AAA' },
-        { id: 2, someField: 'BBB' },
+        { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+        { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
       ];
       const expectedFoundRecord = [service.records[1]];
 
@@ -550,8 +567,8 @@ describe('In Memory DB Service', () => {
       marbles(m => {
         // arrange
         service.records = [
-          { id: 1, someField: 'AAA' },
-          { id: 2, someField: 'BBB' },
+          { id: '1603279e-c143-4675-ba1e-88a9325789f1', someField: 'AAA' },
+          { id: 'bbe6d4af-2a8c-41e6-bbcc-25e6016c7a84', someField: 'BBB' },
         ];
         const expectedFoundRecord = m.cold('a|', service.records[1]);
 

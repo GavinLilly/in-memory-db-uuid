@@ -2,10 +2,11 @@ import { Injectable, Optional } from '@nestjs/common';
 
 import { InMemoryDBConfig, InMemoryDBEntity } from '../interfaces';
 import { Observable, of } from 'rxjs';
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class InMemoryDBService<T extends InMemoryDBEntity> {
-  private recordMap: { [id: number]: T } = {};
+  private recordMap: { [id: string]: T } = {};
 
   constructor(@Optional() private readonly config: InMemoryDBConfig) {}
 
@@ -42,7 +43,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
       this.recordMap = {};
     }
     this.recordMap = records.reduce(
-      (previous: { [id: number]: T }, current: T) => {
+      (previous: { [id: string]: T }, current: T) => {
         return {
           ...previous,
           [current.id]: current,
@@ -62,7 +63,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * @param record the partial record of type `T` to create
    */
   public create(record: Partial<T>): T {
-    const id = record.id || this.getNextId();
+    const id = record.id || uuidv4();
     const newRecord: T = { ...record, id } as T;
     this.recordMap = {
       ...this.recordMap,
@@ -148,7 +149,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Remove the record of type `T` from the in-memory data store using the supplied PK id.
    * @param id the PK id of the record
    */
-  public delete(id: number): void {
+  public delete(id: string): void {
     const { [id]: removed, ...remainder } = this.recordMap;
     this.recordMap = {
       ...remainder,
@@ -159,7 +160,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Remove the record of type `T` from the in-memory data store using the supplied PK id asyncronously.
    * @param id the PK id of the record
    */
-  public deleteAsync(id: number): Observable<void> {
+  public deleteAsync(id: string): Observable<void> {
     this.delete(id);
     const result$ = of<void>();
     return result$;
@@ -169,7 +170,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Remove the records of type `T` from the in-memory data store using the supplied PK ids.
    * @param ids the PK ids of the records
    */
-  public deleteMany(ids: number[]): void {
+  public deleteMany(ids: string[]): void {
     for (const id of ids) {
       this.delete(id);
     }
@@ -179,7 +180,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Remove the records of type `T` from the in-memory data store using the supplied PK ids asyncronously.
    * @param ids the PK ids of the records
    */
-  public deleteManyAsync(ids: number[]): Observable<void> {
+  public deleteManyAsync(ids: string[]): Observable<void> {
     this.deleteMany(ids);
     const result$ = of<void>();
     return result$;
@@ -189,7 +190,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Get a single record of type `T` with the supplied id value.
    * @param id the PK id of the record
    */
-  public get(id: number): T {
+  public get(id: string): T {
     return this.recordMap[id];
   }
 
@@ -197,7 +198,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Get a single record of type `T` with the supplied id value as an Observable;
    * @param id the PK id of the record
    */
-  public getAsync(id: number): Observable<T> {
+  public getAsync(id: string): Observable<T> {
     const result$ = of(this.get(id));
     return result$;
   }
@@ -206,7 +207,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Get records of type `T` with the supplied id values.
    * @param ids the PK ids of the records
    */
-  public getMany(ids: number[]): T[] {
+  public getMany(ids: string[]): T[] {
     const records = ids
       .filter(id => this.recordMap[id])
       .map(id => {
@@ -220,7 +221,7 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
    * Get records of type Observable `T` with the supplied id values
    * @param ids the PK ids of the records
    */
-  public getManyAsync(ids: number[]): Observable<T[]> {
+  public getManyAsync(ids: string[]): Observable<T[]> {
     const result$ = of(this.getMany(ids));
     return result$;
   }
@@ -311,25 +312,5 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
     );
 
     this.createMany(recordsToCreate);
-  }
-
-  /**
-   * get the next id by finding the max id in the current records array and adding 1 to that value.
-   * Example:
-   * - current `recordMap`
-   * ```json5
-   * {
-   *    1: { "id": 1, "prop": "test1" },
-   *    4: { "id": 4, "prop": "test2" }
-   * }
-   * ```
-   * - next next id would be: `5` as the current highest id is `4` + `1` = `5`.
-   */
-  private getNextId(): number {
-    if (this.records && this.records.length > 0) {
-      return Math.max(...this.records.map(r => r.id)) + 1;
-    }
-
-    return 1;
   }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "@nestjs-addons/in-memory-db",
+  "name": "in-memory-db-uuid",
   "version": "0.0.0-development",
-  "description": "Simple In-Memory DB Service for NestJS projects",
-  "author": "Wes Grimes",
+  "description": "Simple In-Memory DB Service for NestJS projects with UUID",
+  "author": "Gavin Lilly",
   "license": "MIT",
-  "repository": "https://github.com/nestjs-addons/in-memory-db",
+  "repository": "https://github.com/GavinLilly/in-memory-db-uuid",
   "schematics": "./dist/schematics/collection.json",
   "scripts": {
     "build": "npm run build:lib && npm run build:schematics",
@@ -70,7 +70,8 @@
     "@angular-devkit/core": "8.3.22",
     "copyfiles": "2.1.1",
     "schematics-utilities": "2.0.1",
-    "typescript": "3.7.4"
+    "typescript": "3.7.4",
+    "uuid": "^8.2.0"
   },
   "keywords": [
     "nestjs",
