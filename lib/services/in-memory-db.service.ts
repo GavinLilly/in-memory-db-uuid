@@ -2,13 +2,13 @@ import { Injectable, Optional } from '@nestjs/common';
 
 import { InMemoryDBConfig, InMemoryDBEntity } from '../interfaces';
 import { Observable, of } from 'rxjs';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class InMemoryDBService<T extends InMemoryDBEntity> {
-  private recordMap: { [id: string]: T } = {};
+  protected recordMap: { [id: string]: T } = {};
 
-  constructor(@Optional() private readonly config: InMemoryDBConfig) {}
+  constructor(@Optional() protected readonly config: InMemoryDBConfig) {}
 
   /**
    * Given the array of records of type `T`, reduce the array into a dictionary object of
@@ -239,6 +239,13 @@ export class InMemoryDBService<T extends InMemoryDBEntity> {
   public getAllAsync(): Observable<T[]> {
     const result$ = of(this.getAll());
     return result$;
+  }
+
+  /**
+   * Return a random record of type `T`.
+   */
+  public getRandom(): T {
+    return this.records[Math.floor(Math.random() * this.records.length)];
   }
 
   /**
